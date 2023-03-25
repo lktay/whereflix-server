@@ -6,8 +6,10 @@ mongoose.connect("mongodb://127.0.0.1:27017/medialist");
 const mediaSchema = new mongoose.Schema({
   apiID: String,
   title: String,
-  posterUrl: String,
+  poster_path: String,
   description: String,
+  media_type: String,
+  providers: [String],
   complete: { type: Boolean, default: false },
 });
 //MODEL
@@ -34,14 +36,18 @@ async function mediaAddHandler(req, res) {
     console.log(req.body);
     const apiID = req.body.apiID;
     const title = req.body.title;
-    const posterUrl = req.body.posterUrl;
+    const poster_path = req.body.poster_path;
     const description = req.body.description;
+    const media_type = req.body.media_type;
+    const providers = req.body.providers;
 
     let newMedia = await mediaModel.create({
       apiID,
       title,
-      posterUrl,
+      poster_path,
       description,
+      media_type,
+      providers,
     });
     newMedia.save();
     res.status(201).json(newMedia);
